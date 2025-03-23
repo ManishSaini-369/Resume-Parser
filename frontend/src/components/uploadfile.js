@@ -10,37 +10,36 @@ const FileUpload = () => {
     const handleFileChange = (e) => setFile(e.target.files[0]);
 
     const handleUpload = async () => {
-    if (!file) {
-        alert('Please select a file first.');
-        return;
-    }
-
-    setLoading(true);
-    try {
-        const result = await upload_file(file);
-
-        if (result) {
-            alert('File uploaded successfully!');
-
-            // Display saved data directly
-            if (result.saved_data) {
-                console.log('Saved Data:', result.saved_data);
-
-                setParsedData([result.saved_data]);  // Display saved data directly
-            } else {
-                await fetchParsedData();  // Fallback for older data
-            }
-        } else {
-            alert('Failed to upload file.');
+        if (!file) {
+            alert('Please select a file first.');
+            return;
         }
-    } catch (error) {
-        console.error('Upload error:', error);
-        alert('Error uploading file. Please try again.');
-    } finally {
-        setLoading(false);
-    }
-};
 
+        setLoading(true);
+        try {
+            const result = await upload_file(file);
+
+            if (result) {
+                alert('File uploaded successfully!');
+
+                // Display saved data directly
+                if (result.saved_data) {
+                    console.log('Saved Data:', result.saved_data);
+
+                    setParsedData([result.saved_data]);  // Display saved data directly
+                } else {
+                    await fetchParsedData();  // Fallback for older data
+                }
+            } else {
+                alert('Failed to upload file.');
+            }
+        } catch (error) {
+            console.error('Upload error:', error);
+            alert('Error uploading file. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const fetchParsedData = async () => {
         try {
@@ -88,19 +87,22 @@ const FileUpload = () => {
                         <Spinner size="lg" color="teal.500" />
                     </Flex>
                 ) : (
-                    <List spacing={2}>
+                    <List spacing={3}>
                         {parsedData.length > 0 ? (
                             parsedData.map((item, index) => (
-                                <ListItem 
+                                <ListItem
                                     key={index}
                                     bg="white"
-                                    p="3"
+                                    p="4"
                                     border="1px solid"
                                     borderColor="gray.200"
                                     borderRadius="md"
                                     boxShadow="sm"
                                 >
-                                    {item.name} - {item.email} - {item.phone}
+                                    <Text><strong>Name:</strong> {item.name || "N/A"}</Text>
+                                    <Text><strong>Phone:</strong> {item.phone || "N/A"}</Text>
+                                    <Text><strong>Email:</strong> {item.email || "N/A"}</Text>
+                                    <Text><strong>Skills:</strong> {item.skills ? item.skills.join(', ') : "N/A"}</Text>
                                 </ListItem>
                             ))
                         ) : (

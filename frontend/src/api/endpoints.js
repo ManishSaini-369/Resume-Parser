@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const BASE_URL = 'http://127.0.0.1:8000/api/'
-const BASE_URL = 'https://resume-parser-s74a.onrender.com/api/'
+const BASE_URL = 'http://127.0.0.1:8000/api/'
+// const BASE_URL = 'https://resume-parser-s74a.onrender.com/api/'
 
 const LOGIN_URL = `${BASE_URL}login/`
 const REGISTER_URL = `${BASE_URL}register/`
