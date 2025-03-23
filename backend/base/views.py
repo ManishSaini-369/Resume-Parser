@@ -11,6 +11,9 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import ResumeSerializer
 from .utils import extract_resume_data
 from rest_framework import generics
+import pdfplumber
+import re
+
 from .models import Todo
 from .models import Resume
 from .serializers import TodoSerializer, UserRegisterSerializer, UserSerializer
@@ -129,7 +132,29 @@ def is_logged_in(request):
     serializer = UserSerializer(request.user, many=False)
     return Response(serializer.data)
 
+# Improved Extraction Function
+def extract_resume_data(pdf_path):
+    data = {"name": "", "email": "", "phone": "", "skills": ""}
 
+    with pdfplumber.open(pdf_path) as pdf:
+        text = ""
+        for page in pdf.pages:
+            page_text = page.extract_text()
+            if page_text:
+                text += page_text
+
+    if not text.strip():
+        image = Image.open(pdf_path)
+        text = pytesseract.image_to_string(image)
+
+    data["email"] = re.search(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', text).group(0) if re.search(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', text) else ""
+    data["phone"] = re.search(r'\b\d{10}\b', text).group(0) if re.search(r'\b\d{10}\b', text) else ""
+
+    skills_keywords = ["Python", "Django", "JavaScript", "React", "SQL", "APIs", "AWS"]
+    extracted_skills = [skill for skill in skills_keywords if skill.lower() in text.lower()]
+    data["skills"] = ', '.join(extracted_skills)
+
+    return data
 
 class ResumeUploadView(APIView):
     parser_classes = (MultiPartParser, FormParser)
@@ -141,6 +166,7 @@ class ResumeUploadView(APIView):
 
             # Extract data and update the instance
             extracted_data = extract_resume_data(resume_instance.pdf_file.path)
+            print("Extracted Data:", extracted_data)
             for key, value in extracted_data.items():
                 setattr(resume_instance, key, value)
             resume_instance.save()
