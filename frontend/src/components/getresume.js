@@ -57,7 +57,7 @@ function ResumeList() {
                                 <Th>Email</Th>
                                 <Th>Phone</Th>
                                 <Th>Skills</Th>
-                                <Th>Download</Th>
+                                {/* <Th>Download</Th> */}
                             </Tr>
                         </Thead>
                         <Tbody>
