@@ -171,7 +171,7 @@ class ResumeUploadView(APIView):
                 if key == 'skills' and isinstance(value, str):
                     value = [skill.strip() for skill in value.split(',')]  # Convert string to list
                 setattr(resume_instance, key, value)
-
+            resume_instance.save()  
 
             # Include both extracted data and saved data in the response
             response_data = {
