@@ -8,6 +8,7 @@ const REGISTER_URL = `${BASE_URL}register/`
 const LOGOUT_URL = `${BASE_URL}logout/`
 const NOTES_URL = `${BASE_URL}todos/`
 const AUTHENTICATED_URL = `${BASE_URL}authenticated/`
+const GETRESUME_URL = `${BASE_URL}resumes/`
 
 axios.defaults.withCredentials = true; 
 
@@ -74,5 +75,15 @@ export const get_parsed_data = async () => {
     } catch (error) {
         console.error('Error fetching parsed data:', error);
         return [];
+    }
+};
+
+export const get_resumes = async () => {
+    try {
+        const response = await axios.get(GETRESUME_URL, { withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching resumes:', error);
+        throw error;  // Ensure the error can be caught in your component
     }
 };

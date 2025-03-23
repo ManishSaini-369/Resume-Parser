@@ -6,9 +6,9 @@ function ResumeList() {
     const [resumes, setResumes] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/resumes/')
+        get_resumes()
             .then(response => {
-                setResumes(response.data);
+                setResumes(response);
             })
             .catch(error => {
                 console.error('Error fetching resumes:', error);
