@@ -168,8 +168,10 @@ class ResumeUploadView(APIView):
             extracted_data = extract_resume_data(resume_instance.pdf_file.path)
             print("Extracted Data:", extracted_data)
             for key, value in extracted_data.items():
+                if key == 'skills' and isinstance(value, str):
+                    value = [skill.strip() for skill in value.split(',')]  # Convert string to list
                 setattr(resume_instance, key, value)
-            resume_instance.save()
+
 
             # Include both extracted data and saved data in the response
             response_data = {
@@ -177,7 +179,8 @@ class ResumeUploadView(APIView):
                 "saved_data": {
                     "name": resume_instance.name,
                     "email": resume_instance.email,
-                    "phone": resume_instance.phone
+                    "phone": resume_instance.phone,
+                    "skills": resume_instance.skills
                 }
             }
 

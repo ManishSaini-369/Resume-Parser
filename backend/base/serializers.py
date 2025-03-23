@@ -36,3 +36,12 @@ class ResumeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Resume
         fields = '__all__'
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        
+        # Ensure `skills` is always a list
+        skills = instance.skills
+        data['skills'] = skills if isinstance(skills, list) else skills.split(', ') if skills else []
+        
+        return data

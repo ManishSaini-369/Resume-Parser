@@ -66,7 +66,9 @@ function ResumeList() {
                                     <Td>{resume.name}</Td>
                                     <Td>{resume.email}</Td>
                                     <Td>{resume.phone}</Td>
-                                    <Td>{resume.skills}</Td>
+                                    {/* <Td>{resume.skills}</Td> */}
+                                    <Td>{Array.isArray(resume.skills) ? resume.skills.join(', ') : resume.skills.replace(/(?<=[a-z])(?=[A-Z])/g, ', ')}</Td>
+
                                     <Td>
                                         {/* <Button 
                                             colorScheme="blue" 
