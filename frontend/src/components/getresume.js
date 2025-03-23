@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer, Button } from '@chakra-ui/react';
+import { get_resumes } from '../api/endpoints';
 
 function ResumeList() {
     const [resumes, setResumes] = useState([]);
