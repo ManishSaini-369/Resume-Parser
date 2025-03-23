@@ -65,7 +65,7 @@ CSRF_COOKIE_NAME = "csrftoken"
 CSRF_HEADER_NAME = "HTTP_X_CSRFTOKEN"
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000"
+    "https://resume-parser-nine.vercel.app"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
